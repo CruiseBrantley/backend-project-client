@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { arrayMove } from "react-sortable-hoc";
-import base from "./rebase";
 import SideBar from "./sidebar";
 import ListView from "./listview";
 import CreateNote from "./createnote";
 import ViewCard from "./viewcard";
 import EditNote from "./editnote";
 import "./notes.css";
+import axios from "axios";
 
 function isSorted(arr) {
   let len = arr.length - 1;
@@ -31,26 +31,39 @@ export default class Notes extends Component {
   }
 
   componentWillMount() {
-    base.syncState("/notes", {
-      context: this,
-      state: "notes",
-      asArray: true
-    });
+    const self = this;
+    axios
+      .get("https://cruise-backend.herokuapp.com/api/notes", {
+        headers: { Authorization: localStorage.getItem("token") }
+      })
+      .then(function(response) {
+        console.log(response.data);
+        self.setState({ notes: response.data });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   addNote = (title, text) => {
-    let id = 0;
-    this.state.notes.forEach(e => {
-      if (e.id >= id) id = e.id + 1;
-    });
-    // while (this.state.notes.some(e => e.id === id)) id++; //most inefficient piece of code ever written, replaced with above
-    let note = { title, text, id };
-    let noteState = this.state.notes;
-    noteState.push(note);
-    this.setState({
-      view: "list",
-      notes: noteState
-    });
+    axios
+      .post(
+        "https://cruise-backend.herokuapp.com/api/notes",
+        { title, text },
+        {
+          headers: { Authorization: localStorage.getItem("token") }
+        }
+      )
+      .then(response => {
+        if (response) {
+          let noteState = this.state.notes;
+          noteState.push(response.data);
+          this.setState({
+            view: "list",
+            notes: noteState
+          });
+        } else console.log("Something went wrong.");
+      });
   };
 
   changeToList = () => {
@@ -65,14 +78,14 @@ export default class Notes extends Component {
     this.setState({ view: "edit" });
   };
 
-  viewNote = id => {
-    this.setState({ currentCard: id, view: "view" });
+  viewNote = _id => {
+    this.setState({ currentCard: _id, view: "view" });
   };
 
-  removeNote = id => {
+  removeNote = _id => {
     this.setState({
       view: "list",
-      notes: this.state.notes.filter(e => e.id !== id)
+      notes: this.state.notes.filter(e => e._id !== _id)
     });
   };
 
@@ -80,10 +93,10 @@ export default class Notes extends Component {
     this.setState({ view: "list", notes: [] });
   };
 
-  editNote = (title, text, id) => {
-    let currNoteIndex = this.state.notes.findIndex(e => e.id === id);
+  editNote = (title, text, _id) => {
+    let currNoteIndex = this.state.notes.findIndex(e => e._id === _id);
     let tempNotes = this.state.notes;
-    tempNotes[currNoteIndex] = { title: title, text: text, id: id };
+    tempNotes[currNoteIndex] = { title: title, text: text };
     this.setState({ view: "view", notes: tempNotes });
   };
 
@@ -167,7 +180,7 @@ export default class Notes extends Component {
             notes={this.state.notes}
           />
           <ViewCard
-            note={this.state.notes.find(e => e.id === this.state.currentCard)}
+            note={this.state.notes.find(e => e._id === this.state.currentCard)}
             removeNote={this.removeNote}
             changeToEdit={this.changeToEdit}
           />
@@ -184,7 +197,7 @@ export default class Notes extends Component {
             notes={this.state.notes}
           />
           <EditNote
-            note={this.state.notes.find(e => e.id === this.state.currentCard)}
+            note={this.state.notes.find(e => e._id === this.state.currentCard)}
             editNote={this.editNote}
           />
         </div>

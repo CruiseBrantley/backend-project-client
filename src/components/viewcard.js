@@ -50,7 +50,7 @@ class ViewCard extends React.Component {
             <div className="modal-button-div">
               <button
                 className="button delete-notes-button"
-                onClick={e => this.props.removeNote(this.props.note.id)}
+                onClick={e => this.props.removeNote(this.props.note._id)}
               >
                 Delete
               </button>

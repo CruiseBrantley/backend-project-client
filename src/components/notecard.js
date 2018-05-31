@@ -20,7 +20,7 @@ function ellipsifyTitle(str) {
 
 const NoteCard = SortableElement(props => {
   return (
-    <div className="notecard" onClick={() => props.viewNote(props.note.id)}>
+    <div className="notecard" onClick={() => props.viewNote(props.note._id)}>
       <h5 className="note-title">{ellipsifyTitle(props.note.title)}</h5>
       <ReactMarkdown source={ellipsify(props.note.text)} escapeHtml={false} />
     </div>
