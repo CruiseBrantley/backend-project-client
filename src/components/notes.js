@@ -83,10 +83,19 @@ export default class Notes extends Component {
   };
 
   removeNote = _id => {
-    this.setState({
-      view: "list",
-      notes: this.state.notes.filter(e => e._id !== _id)
-    });
+    axios
+      .delete(`https://cruise-backend.herokuapp.com/api/notes/${_id}`, {
+        headers: { Authorization: localStorage.getItem("token") }
+      })
+      .then(response => {
+        if (response) {
+          console.log(response);
+          this.setState({
+            view: "list",
+            notes: this.state.notes.filter(e => e._id !== _id)
+          });
+        } else console.log("Something went wrong. Response was ", response);
+      });
   };
 
   removeAllNotes = () => {
@@ -94,10 +103,23 @@ export default class Notes extends Component {
   };
 
   editNote = (title, text, _id) => {
-    let currNoteIndex = this.state.notes.findIndex(e => e._id === _id);
-    let tempNotes = this.state.notes;
-    tempNotes[currNoteIndex] = { title: title, text: text };
-    this.setState({ view: "view", notes: tempNotes });
+    axios
+      .put(
+        `https://cruise-backend.herokuapp.com/api/notes/${_id}`,
+        { title, text },
+        {
+          headers: { Authorization: localStorage.getItem("token") }
+        }
+      )
+      .then(response => {
+        if (response) {
+          const currNoteIndex = this.state.notes.findIndex(e => e._id === _id);
+          const tempNotes = this.state.notes;
+          const data = response.data;
+          tempNotes[currNoteIndex] = data;
+          this.setState({ view: "view", notes: tempNotes });
+        } else console.log("Something went wrong. Response was ", response);
+      });
   };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
