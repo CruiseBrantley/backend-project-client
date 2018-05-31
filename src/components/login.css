@@ -1,0 +1,73 @@
+.outer-div {
+  display: flex;
+  background: #f0eff0;
+  background-size: cover;
+  color: #3b3b3b;
+  height: 100vh;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.left-div-login {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  text-align: left;
+  padding: 10px;
+  padding-top: 50px;
+  width: 250px;
+  background: #cecdce;
+  background-size: cover;
+}
+
+.right-div-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: ellipsis;
+  overflow-y: auto;
+  overflow-x: ellipsis;
+  padding: 20px;
+  padding-right: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.wrapper {
+  margin-top: 80px;
+  align-items: center;
+}
+
+.text-entry {
+  height: 30px;
+  width: 200px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: auto;
+  flex-direction: column;
+}
+
+button {
+  font-size: 1rem;
+}
+
+.login-button {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ababab;
+  margin-bottom: 20px;
+  background: #25b1b5;
+  height: 40px;
+  width: 180px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}

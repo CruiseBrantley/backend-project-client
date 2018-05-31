@@ -1,45 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import "./login.css";
 
 class Register extends React.Component {
   state = {
     username: "",
-    password: ""
+    password: "",
+    invalidCredentials: false
   };
 
   render() {
     return (
-      <div>
-        <h1>Register</h1>
-        <form onSubmit={this.submitHandler}>
-          <div>
-            <label htmlFor="username" />
-            <input
-              name="username"
-              placeholder="username"
-              value={this.state.username}
-              onChange={this.inputChangeHandler}
-              type="text"
-            />
+      <div className="outer-div">
+        <div className="left-div-login">
+          <Link to="/notes/login" className="login-button">
+            Log In
+          </Link>
+        </div>
+        <div className="right-div-login">
+          <div className="wrapper">
+            <h1>Register</h1>
+            <form onSubmit={this.submitHandler}>
+              <div>
+                <label htmlFor="username" />
+                <input
+                  name="username"
+                  placeholder="username"
+                  value={this.state.username}
+                  onChange={this.inputChangeHandler}
+                  type="text"
+                  className="text-entry"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" />
+                <input
+                  name="password"
+                  placeholder="password"
+                  value={this.state.password}
+                  onChange={this.inputChangeHandler}
+                  type="password"
+                  className="text-entry"
+                />
+              </div>
+              <button className="login-button">Register</button>
+            </form>
+            {this.state.invalidCredentials ? (
+              <h3>Username is not available</h3>
+            ) : null}
           </div>
-          <div>
-            <label htmlFor="password" />
-            <input
-              name="password"
-              placeholder="password"
-              value={this.state.password}
-              onChange={this.inputChangeHandler}
-              type="password"
-            />
-          </div>
-          <div>
-            <button>Register</button>
-          </div>
-        </form>
-        <Link to="/notes/login">
-          <h3>Log In</h3>
-        </Link>
+        </div>
       </div>
     );
   }
@@ -59,13 +70,22 @@ class Register extends React.Component {
         this.state
       )
       .then(response => {
-        localStorage.removeItem("token");
-        localStorage.setItem("token", response.data.token);
-        this.props.history.push("/notes");
+        if (response) {
+          localStorage.removeItem("token");
+          localStorage.setItem("token", response.data.token);
+          this.props.history.push("/notes");
+        } else {
+          localStorage.removeItem("token");
+          this.setState({
+            invalidCredentials: true,
+            username: "",
+            password: ""
+          });
+        }
       })
       .catch(err => {
         localStorage.removeItem("token");
-        this.setState({ invalidCredentials: true, password: "" });
+        this.setState({ invalidCredentials: true, username: "", password: "" });
       });
   };
 }
