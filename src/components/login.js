@@ -1,10 +1,8 @@
-// /src/auth/Signin.js
-
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-class Signin extends React.Component {
+class Login extends React.Component {
   state = {
     username: "",
     password: "",
@@ -14,7 +12,7 @@ class Signin extends React.Component {
   render() {
     return (
       <div>
-        <h1>Sign In</h1>
+        <h1>Log In</h1>
         <form onSubmit={this.submitHandler}>
           <div>
             <label htmlFor="username" />
@@ -37,10 +35,10 @@ class Signin extends React.Component {
             />
           </div>
           <div>
-            <button>Sign in</button>
+            <button>Log in</button>
           </div>
         </form>
-        <Link to="/register">
+        <Link to="/notes/register">
           <h3>Register</h3>
         </Link>
         {this.state.invalidCredentials ? <h3>Invalid Credentials</h3> : null}
@@ -60,16 +58,17 @@ class Signin extends React.Component {
     axios
       .post("https://cruise-backend.herokuapp.com/api/users/login", this.state)
       .then(response => {
-        console.log("Made it to response", response);
-        localStorage.setItem("token", response.data.token);
-
-        this.props.history.push("/notes");
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          this.props.history.push("/notes");
+        }
+        this.setState({ invalidCredentials: true, password: "" });
       })
       .catch(err => {
         localStorage.removeItem("token");
-        this.setState({ invalidCredentials: true, username: "", password: "" });
+        this.setState({ invalidCredentials: true, password: "" });
       });
   };
 }
 
-export default Signin;
+export default Login;

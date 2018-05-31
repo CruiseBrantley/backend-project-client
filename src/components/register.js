@@ -1,5 +1,3 @@
-// /src/auth/Signin.js
-
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -39,8 +37,8 @@ class Register extends React.Component {
             <button>Register</button>
           </div>
         </form>
-        <Link to="/signin">
-          <h3>Sign In</h3>
+        <Link to="/notes/login">
+          <h3>Log In</h3>
         </Link>
       </div>
     );
@@ -56,14 +54,18 @@ class Register extends React.Component {
     event.preventDefault();
 
     axios
-    .post("https://cruise-backend.herokuapp.com/api/users/register", this.state)
+      .post(
+        "https://cruise-backend.herokuapp.com/api/users/register",
+        this.state
+      )
       .then(response => {
         localStorage.removeItem("token");
-
+        localStorage.setItem("token", response.data.token);
         this.props.history.push("/notes");
       })
       .catch(err => {
         localStorage.removeItem("token");
+        this.setState({ invalidCredentials: true, password: "" });
       });
   };
 }
