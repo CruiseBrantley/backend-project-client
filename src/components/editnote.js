@@ -42,7 +42,7 @@ class EditNote extends Component {
                 this.props.editNote(
                   this.state.title,
                   this.state.text,
-                  this.props.note.id
+                  this.props.note._id
                 )
               }
             >
