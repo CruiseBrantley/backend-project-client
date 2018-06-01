@@ -8,15 +8,7 @@ import EditNote from "./editnote";
 import "./notes.css";
 import axios from "axios";
 
-function isSorted(arr) {
-  let len = arr.length - 1;
-  for (let i = 0; i < len; ++i) {
-    if (arr[i].title > arr[i + 1].title) {
-      return false;
-    }
-  }
-  return true;
-}
+let sortedFlag = false;
 
 export default class Notes extends Component {
   constructor(props) {
@@ -133,32 +125,19 @@ export default class Notes extends Component {
   };
 
   sortList = () => {
-    let baseList = this.state.notes;
     let sortedList;
-    if (isSorted(baseList))
-      sortedList = this.state.notes.sort((a, b) => {
-        var titleA = a.title.toLowerCase(); // ignore upper and lowercase
-        var titleB = b.title.toLowerCase(); // ignore upper and lowercase
-        if (titleA < titleB) {
-          return 1;
-        }
-        if (titleA > titleB) {
-          return -1;
-        }
-        return 0;
-      });
-    else
-      sortedList = this.state.notes.sort((a, b) => {
-        var titleA = a.title.toLowerCase(); // ignore upper and lowercase
-        var titleB = b.title.toLowerCase(); // ignore upper and lowercase
-        if (titleA < titleB) {
-          return -1;
-        }
-        if (titleA > titleB) {
-          return 1;
-        }
-        return 0;
-      });
+    sortedList = this.state.notes.sort((a, b) => {
+      var titleA = a.title.toLowerCase(); // ignore upper and lowercase
+      var titleB = b.title.toLowerCase(); // ignore upper and lowercase
+      if (sortedFlag ? titleA < titleB : titleA > titleB) {
+        return 1;
+      }
+      if (sortedFlag ? titleA > titleB : titleA < titleB) {
+        return -1;
+      }
+      return 0;
+    });
+    sortedFlag = !sortedFlag;
     this.setState({
       notes: sortedList
     });
