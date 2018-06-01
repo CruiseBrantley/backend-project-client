@@ -46,7 +46,7 @@ export default class Notes extends Component {
   }
 
   addNote = (title, text, picture) => {
-    if (picture !== "") text += `<img src="${picture}">`;
+    if (picture !== "") text += `<img src="${picture}" draggable="false">`;
     if (title === "") title = "Title";
     if (text === "" && picture === "") text = "Some sample text";
     axios
