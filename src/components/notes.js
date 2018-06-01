@@ -26,7 +26,8 @@ export default class Notes extends Component {
       filteredNotes: [],
       search: "",
       view: "list",
-      currentCard: 0
+      currentCard: 0,
+      loggedIn: false
     };
   }
 
@@ -37,15 +38,16 @@ export default class Notes extends Component {
         headers: { Authorization: localStorage.getItem("token") }
       })
       .then(function(response) {
-        console.log(response.data);
-        self.setState({ notes: response.data });
+        self.setState({ notes: response.data, loggedIn: true });
       })
       .catch(function(error) {
         console.log(error);
       });
   }
 
-  addNote = (title, text) => {
+  addNote = (title, text, picture) => {
+    if (picture !== "") text += `<img src="${picture}">`;
+    if (title === "") title = "Title";
     axios
       .post(
         "https://cruise-backend.herokuapp.com/api/notes",
@@ -102,7 +104,8 @@ export default class Notes extends Component {
     this.setState({ view: "list", notes: [] });
   };
 
-  editNote = (title, text, _id) => {
+  editNote = (title, text, picture, _id) => {
+    if (picture !== "") text += `<img src="${picture}">`;
     axios
       .put(
         `https://cruise-backend.herokuapp.com/api/notes/${_id}`,
@@ -175,6 +178,7 @@ export default class Notes extends Component {
             viewNote={this.viewNote}
             onSortEnd={this.onSortEnd}
             sortList={this.sortList}
+            loggedIn={this.state.loggedIn}
           />
         </div>
       );

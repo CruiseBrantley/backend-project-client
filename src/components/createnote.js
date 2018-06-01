@@ -6,7 +6,8 @@ class CreateNote extends Component {
 
     this.state = {
       title: "",
-      text: ""
+      text: "",
+      picture: ""
     };
   }
 
@@ -26,6 +27,12 @@ class CreateNote extends Component {
               title="title"
               onChange={this.handleTextInput}
             />
+            <input
+              className="picture-box"
+              placeholder="Picture URL"
+              title="picture"
+              onChange={this.handleTextInput}
+            />
             <textarea
               rows="8"
               cols="80"
@@ -37,7 +44,11 @@ class CreateNote extends Component {
             <div
               className="save-button button"
               onClick={() =>
-                this.props.addNote(this.state.title, this.state.text)
+                this.props.addNote(
+                  this.state.title,
+                  this.state.text,
+                  this.state.picture
+                )
               }
             >
               SAVE

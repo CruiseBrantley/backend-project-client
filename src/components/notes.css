@@ -39,6 +39,10 @@ h1 {
   padding-top: 40px;
 }
 
+.some-bottom-margin {
+  margin-bottom: 20px;
+}
+
 .button {
   display: flex;
   flex-direction: column;
@@ -125,6 +129,15 @@ h5 {
 
 .title-box {
   width: 50%;
+  height: 40px;
+  padding-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.picture-box {
+  max-width: 27.5%;
   height: 40px;
   padding-left: 15px;
   margin-bottom: 10px;

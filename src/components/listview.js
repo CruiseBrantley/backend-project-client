@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NoteCard from "./notecard";
 import { SortableContainer } from "react-sortable-hoc";
+import { Link } from "react-router-dom";
 
 const SortableList = SortableContainer(props => {
   return (
@@ -42,13 +43,27 @@ class ListView extends Component {
   };
 
   render() {
-    if (this.props.notes.length === 0) {
+    if (this.props.notes.length === 0 && this.props.loggedIn) {
       return (
         <div className="right-div">
           <h3 className="notes-h3">Your Notes:</h3>
           <div className="notes-div">
             <h3>
               You don't have any notes, click "Create New Note" to add some!
+            </h3>
+          </div>
+        </div>
+      );
+    } else if (this.props.notes.length === 0 && !this.props.loggedIn) {
+      return (
+        <div className="right-div">
+          <h3 className="notes-h3">Your Notes:</h3>
+          <div className="notes-div">
+            <h3>
+              <div className="some-bottom-margin">You're not logged in!</div>
+              <Link to="/notes/login" className="login-button">
+                Log In
+              </Link>
             </h3>
           </div>
         </div>

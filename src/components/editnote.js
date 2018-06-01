@@ -6,7 +6,8 @@ class EditNote extends Component {
 
     this.state = {
       title: this.props.note.title,
-      text: this.props.note.text
+      text: this.props.note.text,
+      picture: ""
     };
   }
 
@@ -27,6 +28,12 @@ class EditNote extends Component {
               value={this.state.title}
               onChange={this.handleTextInput}
             />
+            <input
+              className="picture-box"
+              placeholder="Picture URL"
+              title="picture"
+              onChange={this.handleTextInput}
+            />
             <textarea
               rows="8"
               cols="80"
@@ -42,6 +49,7 @@ class EditNote extends Component {
                 this.props.editNote(
                   this.state.title,
                   this.state.text,
+                  this.state.picture,
                   this.props.note._id
                 )
               }
