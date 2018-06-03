@@ -19,7 +19,7 @@ export default class Notes extends Component {
       search: "",
       view: "list",
       currentCard: 0,
-      loggedIn: false
+      loggedIn: null
     };
   }
 
@@ -33,6 +33,7 @@ export default class Notes extends Component {
         self.setState({ notes: response.data, loggedIn: true });
       })
       .catch(function(error) {
+        self.setState({ loggedIn: false })
         console.log(error);
       });
   }

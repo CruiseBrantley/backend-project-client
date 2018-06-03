@@ -54,7 +54,7 @@ class ListView extends Component {
           </div>
         </div>
       );
-    } else if (this.props.notes.length === 0 && !this.props.loggedIn) {
+    } else if (this.props.notes.length === 0 && this.props.loggedIn === false) {
       return (
         <div className="right-div">
           <h3 className="notes-h3">Your Notes:</h3>
@@ -64,6 +64,17 @@ class ListView extends Component {
               <Link to="/notes/login" className="login-button">
                 Log In
               </Link>
+            </h3>
+          </div>
+        </div>
+      );
+    } else if (this.props.notes.length === 0 && this.props.loggedIn === null) {
+      return (
+        <div className="right-div">
+          <h3 className="notes-h3">Your Notes:</h3>
+          <div className="notes-div">
+            <h3>
+              <div className="some-bottom-margin">Loading...</div>
             </h3>
           </div>
         </div>
