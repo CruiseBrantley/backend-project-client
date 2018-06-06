@@ -19,7 +19,8 @@ export default class Notes extends Component {
       search: "",
       view: "list",
       currentCard: 0,
-      loggedIn: null
+      loggedIn: null,
+      currentUser: null
     };
   }
 
@@ -30,10 +31,14 @@ export default class Notes extends Component {
         headers: { Authorization: localStorage.getItem("token") }
       })
       .then(function(response) {
-        self.setState({ notes: response.data, loggedIn: true });
+        self.setState({
+          notes: response.data.notes,
+          loggedIn: true,
+          currentUser: response.data.name.username
+        });
       })
       .catch(function(error) {
-        self.setState({ loggedIn: false })
+        self.setState({ loggedIn: false });
         console.log(error);
       });
   }
@@ -153,6 +158,7 @@ export default class Notes extends Component {
             changeToCreate={this.changeToCreate}
             removeAllNotes={this.removeAllNotes}
             notes={this.state.notes}
+            currentUser={this.state.currentUser}
           />
           <ListView
             notes={this.state.notes}
@@ -172,6 +178,7 @@ export default class Notes extends Component {
             changeToCreate={this.changeToCreate}
             removeAllNotes={this.removeAllNotes}
             notes={this.state.notes}
+            currentUser={this.state.currentUser}
           />
           <CreateNote addNote={this.addNote} />
         </div>
@@ -185,6 +192,7 @@ export default class Notes extends Component {
             changeToCreate={this.changeToCreate}
             removeAllNotes={this.removeAllNotes}
             notes={this.state.notes}
+            currentUser={this.state.currentUser}
           />
           <ViewCard
             note={this.state.notes.find(e => e._id === this.state.currentCard)}
@@ -202,6 +210,7 @@ export default class Notes extends Component {
             changeToCreate={this.changeToCreate}
             removeAllNotes={this.removeAllNotes}
             notes={this.state.notes}
+            currentUser={this.state.currentUser}
           />
           <EditNote
             note={this.state.notes.find(e => e._id === this.state.currentCard)}

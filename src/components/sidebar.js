@@ -3,9 +3,18 @@ import { CSVLink } from "react-csv";
 import { Route } from "react-router-dom";
 
 const SideBar = props => {
+  function headerUser() {
+    if (props.currentUser)
+      return (
+        props.currentUser.charAt(0).toUpperCase() +
+        props.currentUser.slice(1) +
+        "'s Notes"
+      );
+    return "Cruise Notes";
+  }
   return (
     <div className="sidebar-div">
-      <h1>Cruise Notes</h1>
+      <h1>{headerUser()}</h1>
       <div
         className="view-notes-button button"
         onClick={() => props.changeToList()}
